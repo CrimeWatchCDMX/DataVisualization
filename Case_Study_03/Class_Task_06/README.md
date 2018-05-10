@@ -1,1 +1,1 @@
- 
+Use read_csv instead of read.csv because its functions will come in handy when it comes to dealing with dirtier data 
