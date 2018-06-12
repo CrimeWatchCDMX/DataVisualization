@@ -1,0 +1,61 @@
+---
+title: "Savior Names"
+author: "Erik McDonald"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:  
+    keep_md: true
+    toc: true
+    toc_float: true
+    code_folding: hide
+    fig_height: 6
+    fig_width: 12
+    fig_align: 'center'
+---
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+```{r load_libraries, include=FALSE}
+library(stringr)
+library(stringi)
+library(readr)
+library(tidyverse)
+
+```
+
+```{r load_data}
+scrip <- read_csv("lds-scriptures.csv")
+
+bmtxt <- scrip %>%
+  filter(volume_title == "Book of Mormon")
+
+bm_strng <- scrip %>%
+  filter(volume_title == "Book of Mormon") %>%
+  str_c(collapse = " ")
+
+names <- read_rds(gzcon(url("https://byuistats.github.io/M335/data/BoM_SaviorNames.rds")))
+```
+
+
+
+
+
+```{r tidy_data}
+
+list <- as.vector(names$name)
+list <- str_c(list, collapse = "|")
+
+
+str_locate_all(bm_strng, list)
+```
+
+## Data Visualization
+
+```{r plot_data}
+# Use this R-Chunk to plot & visualize your data!
+
+```
+
+## Conclusions
