@@ -1,0 +1,58 @@
+---
+title: "Task 18: US Grocer"
+author: "Erik McDonald"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:  
+    keep_md: true
+    toc: true
+    toc_float: true
+    code_folding: hide
+    fig_height: 6
+    fig_width: 12
+    fig_align: 'center'
+---
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+```{r load_libraries, include=FALSE}
+library(tidyverse)
+library(tidyquant)
+library(dygraphs)
+library(xts)
+library(Quandl)
+library(timetk)
+
+```
+
+```{r load_data}
+# Use this R-Chunk to import all your datasets!
+kr <- tq_get("KR", get = "stock.price", from = "2013-01-01")
+
+```
+
+## Background
+
+Here we will be examining the stock performance of Kroger, a grocery company
+## Data Wrangling
+
+```{r tidy_data}
+# Use this R-Chunk to clean & wrangle your data!
+k <- kr %>%
+  mutate(time = row_number()) %>%
+  select(time, adjusted)
+
+```
+
+## Data Visualization
+
+```{r plot_data}
+# Use this R-Chunk to plot & visualize your data!
+dygraph(k)
+
+```
+
+## Conclusions
+This analysis will require a bit more work, correctly incorporating the time series element aspect into the graph proved to be confusing. In the end the only way I could maintain the time continuum and have the package allow me to plot the data was by assigning an index value based on date on each row, however incorporating it so that the corresponding dates come up on the graph will be what needs to be done next.
