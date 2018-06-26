@@ -1,1 +1,1 @@
- 
+the dygraphs package is difficult to work with in terms of time series, it appears to prefer wide vs tidy data 

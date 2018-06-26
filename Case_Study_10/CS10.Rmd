@@ -123,7 +123,8 @@ tidyquote <- quote %>%
 
 ## Data Visualization
 Our first plot is an interactive graph incorporating the adjusted close prices for each security.
-```{r plot_data}
+Because dygraphs will not render on github I have just left the code here
+
 dygraph(dyquote) %>%
   dySeries("..1", label = "CXW") %>%
   dySeries("..2", label = "F") %>%
@@ -137,7 +138,6 @@ dygraph(dyquote) %>%
   dySeries("..10", label = "WFC") %>%
   dySeries("..11", label = "WMT")
 
-```
 
 The following graphic is a boxplot that helps us better understand the distribution of trading volume for each security across time as well.
 ```{r}

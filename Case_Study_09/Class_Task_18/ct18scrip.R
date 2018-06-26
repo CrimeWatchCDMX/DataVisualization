@@ -18,3 +18,5 @@ kt <- kr %>%
   mutate(dat = ts(date)) %>%
   mutate(d = tk_index(dat)) %>%
   mutate(dd = tk_ts(d))
+
+library(DT)
