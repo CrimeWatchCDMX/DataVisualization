@@ -70,6 +70,9 @@ ca_data <- inner_join(ca_perm, ca_cont, by = "name")
 ## Data Visualization
 
 The first visualization will examine the continental United States.
+
+The next graphic takes a look at housing trends in the state of California by county throughout the same time period.
+
 ```{r plot_data}
 country_data %>%
   filter(between(year, 1999,2010)) %>%
@@ -83,11 +86,7 @@ country_data %>%
   labs(fill = "Percent Change", title = "Trends in U.S. Housing Starts", subtitle = "(1999 - 2010)") +
   theme_bw() +
   theme(legend.position = "bottom")
-```
 
-The next graphic takes a look at housing trends in the state of California by county throughout the same time period.
-
-```{r}
 ca_data %>%
   filter(between(year, 1999,2010)) %>%
   filter(between(pct_change, -90, 100)) %>%
