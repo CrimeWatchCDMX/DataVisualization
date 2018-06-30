@@ -1,5 +1,5 @@
 #######################################################Case study 10 script #################################
-library(tidyverse)
+library(tidyverse) #
 library(buildings)
 library(USAboundaries)
 library(stringr)
