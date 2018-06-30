@@ -101,3 +101,6 @@ ca_data %>%
   theme(legend.position = "bottom")
 ```
 
+## Conclusion
+
+It is clear from both graphics that from 2006 general housing trends were indicative of the future direction of the market and that the infamous bubble had already reached its peak.
