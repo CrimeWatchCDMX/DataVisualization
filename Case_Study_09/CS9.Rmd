@@ -1,0 +1,163 @@
+---
+title: "Stock Analysis"
+author: "Erik McDonald"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:  
+    keep_md: true
+    toc: true
+    toc_float: true
+    code_folding: hide
+    fig_height: 6
+    fig_width: 12
+    fig_align: 'center'
+---
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+```{r load_libraries, include=FALSE}
+library(tidyquant)
+library(tidyverse)
+library(dygraphs)
+library(lubridate)
+library(plotly)
+```
+
+```{r load_data}
+tickers_today <- c("CXW", "F", "GM", "JCP", "KR", "WDC", "NKE","T", "WDAY", "WFC", "WMT")
+
+quote <- tq_get(tickers_today, get = "stock.prices", from = "2013-06-26")
+
+```
+
+## Background
+
+Here we will be taking advantage of the ggplot and dygraphs packages to analyze stock performance as well as introduce interactivity to the graphics.
+
+## Data Wrangling
+Here we will get the data into format useable in the dygraph package, and then some small tranformations for the data in tidy format as well.
+```{r tidy_data}
+dyCXW <- quote %>%
+  filter(symbol == "CXW") %>%
+  select(date, adjusted)
+
+dyF <- quote %>%
+  filter(symbol == "F") %>%
+  select(date, adjusted)
+
+dyGM <- quote %>%
+  filter(symbol == "GM") %>%
+  select(date, adjusted)
+
+dyJCP <- quote %>%
+  filter(symbol == "JCP") %>%
+  select(date, adjusted)
+
+
+dyKR <- quote %>%
+  filter(symbol == "KR") %>%
+  select(date, adjusted)
+
+
+dyWDC <- quote %>%
+  filter(symbol == "WDC") %>%
+  select(date, adjusted)
+
+
+dyNKE <- quote %>%
+  filter(symbol == "NKE") %>%
+  select(date, adjusted)
+
+
+dyT <- quote %>%
+  filter(symbol == "T") %>%
+  select(date, adjusted)
+
+
+dyWDAY <- quote %>%
+  filter(symbol == "WDAY") %>%
+  select(date, adjusted)
+
+
+dyWFC <- quote %>%
+  filter(symbol == "WFC") %>%
+  select(date, adjusted)
+
+
+dyWMT <- quote %>%
+  filter(symbol == "WMT") %>%
+  select(date, adjusted)
+
+CXW <- xts(dyCXW$adjusted, order.by = as.Date(dyCXW$date))
+
+F <- xts(dyF$adjusted, order.by = as.Date(dyF$date))
+
+GM <- xts(dyGM$adjusted, order.by = as.Date(dyGM$date))
+
+JCP <- xts(dyJCP$adjusted, order.by = as.Date(dyJCP$date))
+
+KR <- xts(dyKR$adjusted, order.by = as.Date(dyKR$date))
+
+WDC <- xts(dyWDC$adjusted, order.by = as.Date(dyWDC$date))
+
+NKE <- xts(dyNKE$adjusted, order.by = as.Date(dyNKE$date))
+
+T <- xts(dyT$adjusted, order.by = as.Date(dyT$date))
+
+WDAY <- xts(dyWDAY$adjusted, order.by = as.Date(dyWDAY$date))
+
+WFC <- xts(dyWFC$adjusted, order.by = as.Date(dyWFC$date))
+
+WMT <- xts(dyWMT$adjusted, order.by = as.Date(dyWMT$date))
+
+
+dyquote <- cbind(CXW, F, GM, JCP, KR, WDC, NKE, T, WDAY, WFC, WMT)
+
+
+tidyquote <- quote %>%
+  mutate(vol = volume/10000) %>%
+  select(symbol, date, vol, adjusted)
+```
+
+## Data Visualization
+Our first plot is an interactive graph incorporating the adjusted close prices for each security.
+Because dygraphs will not render on github I have just left the code here
+
+
+```{r}
+dygraph(dyquote) %>%
+  dySeries("..1", label = "CXW") %>%
+  dySeries("..2", label = "F") %>%
+  dySeries("..3", label = "GM") %>%
+  dySeries("..4", label = "JCP") %>% 
+  dySeries("..5", label = "KR") %>%
+  dySeries("..6", label = "WDC") %>%
+  dySeries("..7", label = "NKE") %>%
+  dySeries("..8", label = "T") %>%
+  dySeries("..9", label = "WDAY") %>%
+  dySeries("..10", label = "WFC") %>%
+  dySeries("..11", label = "WMT")
+```
+
+The following graphic is a boxplot that helps us better understand the distribution of trading volume for each security across time as well.
+```{r}
+tidyquote %>%
+  ggplot(aes(x = symbol, y = vol, color = date, fill = symbol)) +
+  geom_jitter() +
+  geom_boxplot() +
+  labs(y = 'Volume (tens of thousands of shares)', x = 'Ticker' )
+```
+In the next case we will look at volume but now as a time series faceting by company, attempting to capture the stock price in the analysis as well by linking that to each plot size
+```{r}
+tidyquote %>%
+  ggplot(aes(x = date, y = vol, color = symbol)) +
+  geom_point(aes(size = adjusted)) +
+  facet_wrap(~symbol) +
+  labs(y = 'Volume (tens of thousands of shares)', x = 'Date' )
+```
+
+## Conclusions
+
+The first interactive graph is an effective tool for those who are attempting to engage in long term investing, it reveals which securities have had the greatest increase in the time period. The following graphics on the other hand emphasize volume, this metric is particularly useful for those engaged in short term trading or day trading. Periods of high volume trading tend to be indicative of greater volatility, as the market may over correct of under correct the actual value of the security in these times, traders may take advantage of high volume securities or high volume periods to find arbitrage opportunities.

@@ -63,4 +63,5 @@ tot_bet %>%
 bet %>%
   ggplot(aes(x = date, y = adjusted, color = symbol)) +
   geom_point(size = .1) +
-  geom_line()
+  geom_line() +
+  facet_wrap(~symbol, scales = "free")

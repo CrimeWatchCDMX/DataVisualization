@@ -11,6 +11,8 @@ output:
     fig_height: 6
     fig_width: 12
     fig_align: 'center'
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r, echo=FALSE}
@@ -22,6 +24,8 @@ library(tidyverse)
 library(buildings)
 library(USAboundaries)
 library(stringr)
+library(USAboundariesData)
+library(leaflet)
 ```
 
 ```{r load_data, include=FALSE}
@@ -104,3 +108,9 @@ ca_data %>%
 ## Conclusion
 
 It is clear from both graphics that from 2006 general housing trends were indicative of the future direction of the market and that the infamous bubble had already reached its peak.
+
+```{r}
+leaflet() %>%
+  addTiles() %>%  # Add default OpenStreetMap map tiles
+  addMarkers(lng=-111.8, lat=43.82, popup="The birthplace of R")
+```

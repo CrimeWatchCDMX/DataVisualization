@@ -1,1 +1,1 @@
- 
+ My name is Erik, I want to use data to make the world a better place. I have an interest in helping everyone, but honestly I have a Latin America bias.
